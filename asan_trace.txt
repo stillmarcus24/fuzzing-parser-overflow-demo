@@ -1,0 +1,15 @@
+    ==1985438==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x6e0634df0078 at pc 0x720636d28d2d bp 0x7fff5291f400 sp 0x7fff5291eba8
+    WRITE of size 105 at 0x6e0634df0078 thread T0
+        #0 0x720636d28d2c in memcpy ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors_memintrinsics.inc:117
+        #1 0x5c4d1e94f395 in memcpy /usr/include/x86_64-linux-gnu/bits/string_fortified.h:29
+        #2 0x5c4d1e94f395 in parse_record /home/marcus/build/fuzz-demo/toy_parser.c:13
+        #3 0x5c4d1e94f539 in main /home/marcus/build/fuzz-demo/repro.c:7
+        #4 0x72063682a600  (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a600) (BuildId: 066527e430a32768d82741e00b81eebb1a872294)
+        #5 0x72063682a717 in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a717) (BuildId: 066527e430a32768d82741e00b81eebb1a872294)
+        #6 0x5c4d1e94f244 in _start (/home/marcus/build/fuzz-demo/repro+0x1244) (BuildId: 69efd675d67a644f16db74fb8768764bd9c0cd7b)
+    
+    Address 0x6e0634df0078 is located in stack of thread T0 at offset 120 in frame
+        #0 0x5c4d1e94f419 in main /home/marcus/build/fuzz-demo/repro.c:6
+    
+      This frame has 2 object(s):
+        [48, 120) 'r' (line 7)

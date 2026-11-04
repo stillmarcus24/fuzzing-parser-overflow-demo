@@ -1,0 +1,13 @@
+--- a/toy_parser.c
++++ b/toy_parser.c
+@@ parse_record
+     out->type = buf[0];
+     uint8_t nlen = buf[1];                 /* attacker-controlled length */
+-    memcpy(out->name, buf + 2, nlen);      /* BUG: unchecked */
+-    out->name[nlen] = 0;
++    /* Bound the copy by BOTH the destination buffer and the bytes actually present. */
++    if ((size_t)nlen + 2 > len) return -1;             /* length runs past the input */
++    if (nlen >= sizeof(out->name)) return -1;          /* length exceeds the buffer */
++    memcpy(out->name, buf + 2, nlen);
++    out->name[nlen] = 0;
+     return 0;

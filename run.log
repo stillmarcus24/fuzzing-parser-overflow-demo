@@ -1,0 +1,53 @@
+iter 0
+=================================================================
+==1978564==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x75a7c8df0078 at pc 0x79a7cbd28d2d bp 0x7ffd735c9b60 sp 0x7ffd735c9308
+WRITE of size 105 at 0x75a7c8df0078 thread T0
+    #0 0x79a7cbd28d2c in memcpy ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors_memintrinsics.inc:117
+    #1 0x59ed5639c4ca in memcpy /usr/include/x86_64-linux-gnu/bits/string_fortified.h:29
+    #2 0x59ed5639c4ca in parse_record /home/marcus/build/fuzz-demo/toy_parser.c:13
+    #3 0x59ed5639c999 in main /home/marcus/build/fuzz-demo/fuzz_main.c:18
+    #4 0x79a7cb02a600  (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a600) (BuildId: 066527e430a32768d82741e00b81eebb1a872294)
+    #5 0x79a7cb02a717 in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a717) (BuildId: 066527e430a32768d82741e00b81eebb1a872294)
+    #6 0x59ed5639c304 in _start (/home/marcus/build/fuzz-demo/fuzzer+0x2304) (BuildId: 1d9d23d7a6d46c1cad3953e4ab33eb6cc8863ff1)
+
+Address 0x75a7c8df0078 is located in stack of thread T0 at offset 120 in frame
+    #0 0x59ed5639c65d in main /home/marcus/build/fuzz-demo/fuzz_main.c:10
+
+  This frame has 2 object(s):
+    [48, 120) 'r' (line 13)
+    [160, 416) 'buf' (line 13) <== Memory access at offset 120 partially underflows this variable
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-buffer-overflow /usr/include/x86_64-linux-gnu/bits/string_fortified.h:29 in memcpy
+Shadow bytes around the buggy address:
+  0x75a7c8defd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75a7c8defe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75a7c8defe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75a7c8deff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75a7c8deff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x75a7c8df0000: f1 f1 f1 f1 f1 f1 00 00 00 00 00 00 00 00 00[f2]
+  0x75a7c8df0080: f2 f2 f2 f2 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75a7c8df0100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75a7c8df0180: 00 00 00 00 f3 f3 f3 f3 f3 f3 f3 f3 f3 f3 f3 f3
+  0x75a7c8df0200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75a7c8df0280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==1978564==ABORTING
